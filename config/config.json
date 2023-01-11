@@ -1,22 +1,22 @@
 {
   "development": {
     "username": "root",
-    "password": null,
-    "database": "database_development",
+    "password": "Password_root@2023",
+    "database": "nodeauction_db_dev",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": null,
-    "database": "database_test",
+    "database": "nodeauction_db_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
-    "database": "database_production",
+    "database": "nodeauction_db_prod",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
