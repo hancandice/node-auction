@@ -3,8 +3,14 @@
 const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
+
+const User = require("./user");
+const Good = require("./good");
+const Auction = require("./auction");
+
 const process = require("process");
 const basename = path.basename(__filename);
+
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
@@ -35,13 +41,18 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+db.User = User;
+db.Good = Good;
+db.Auction = Auction;
+
 Object.keys(db).forEach((modelName) => {
+  db[modelName].init(sequelize);
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
 module.exports = db;
