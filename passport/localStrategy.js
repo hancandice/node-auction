@@ -26,7 +26,7 @@ module.exports = () => {
             });
           }
         } catch (error) {
-          console.log(error);
+          console.log({ error });
           done(error);
         }
       }
