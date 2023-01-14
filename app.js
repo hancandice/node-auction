@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const nunjucks = require("nunjucks");
+const { initialize } = require("passport");
 const { sequelize } = require("./models");
 const indexRouter = require("./routes/index");
 
@@ -23,6 +24,8 @@ sequelize
   });
 
 app.use(morgan("dev"));
+
+// app.use(initialize());
 
 app.use("/", indexRouter);
 

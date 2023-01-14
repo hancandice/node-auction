@@ -4,9 +4,15 @@ const { checkSignedUp } = require("./middlewares");
 
 const router = Router();
 
+router.use((req, res, next) => {
+  console.log({ req, res });
+  next();
+});
+
 router.get("/", async (req, res, next) => {
   try {
     const goods = await Good.findAll({ where: { SoldId: null } });
+    console.log({ goods });
     res.render("main", {
       title: "Auction 🛍",
       goods,
