@@ -3,17 +3,25 @@
 {% block content %}
 <form action="/auth/join" method="post">
     <label for="join-email">Email</label>
-    <input type="email" id="join-email" name="email">
+    <input type="email" id="join-email" name="email" required>
 
     <label for="join-nickname">Nickname</label>
-    <input type="text" id="join-nickname" name="nickname">
+    <input type="text" id="join-nickname" name="nickname" required>
 
     <label for="join-password">Password</label>
-    <input type="password" id="join-password" name="password">
+    <input type="password" id="join-password" name="password" required>
 
     <label for="join-money">Money</label>
-    <input type="number" id="join-money" name="money">
+    <input type="number" id="join-money" name="money" required>
 
     <button type="submit">Sign up</button>
 </form>
+
+<script>
+    window.onload = () => {
+        if (new URL(location.href).searchParams.get("joinError")) {
+            alert(new URL(location.href).searchParams.get("joinError"))
+        }
+    }
+</script>
 {% endblock %}

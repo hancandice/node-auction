@@ -10,6 +10,12 @@ router.post("/join", async (req, res, next) => {
     console.log({ email, nickname, password, money })
 
     try {
+
+        const exUser = await User.findOne({ where: { email } })
+        if (exUser) {
+            console.log({ exUser })
+            return res.redirect("/join?joinError=This email is already registered email. 🤭 Please use a different email address.")
+        }
         const hashed = await hash(password, 12)
         await User.create({
             email,

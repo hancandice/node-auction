@@ -11,7 +11,7 @@ module.exports = class User extends Model {
         },
         password: {
           type: STRING(100),
-          allowNull: true,
+          allowNull: false,
         },
         nickname: {
           type: STRING(15),
