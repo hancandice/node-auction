@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="/auth/join" method="post">
+    <label for="join-email">Email</label>
+    <input type="email" id="join-email" name="email">
+
+    <label for="join-nickname">Nickname</label>
+    <input type="text" id="join-nickname" name="nickname">
+
+    <label for="join-password">Password</label>
+    <input type="password" id="join-password" name="password">
+
+    <label for="join-money">Money</label>
+    <input type="number" id="join-money" name="money">
+
+    <button type="submit">Sign up</button>
+</form>
+{% endblock %}

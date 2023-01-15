@@ -23,6 +23,10 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/join", checkSignedUp, () => ({}));
+router.get("/join", async (req, res, next) => {
+  res.render("join", {
+    title: "Sign up for Auction 😉"
+  });
+});
 
 module.exports = router;

@@ -4,6 +4,7 @@ const nunjucks = require("nunjucks");
 const { initialize } = require("passport");
 const { sequelize } = require("./models");
 const indexRouter = require("./routes/index");
+const authRouter = require("./routes/auth")
 
 const app = express();
 
@@ -27,7 +28,11 @@ app.use(morgan("dev"));
 
 // app.use(initialize());
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
 app.use("/", indexRouter);
+app.use("/auth", authRouter)
 
 //-*-*-* When there's no corresponding router -> Error handling *-*-*-//
 app.use((req, _res, next) => {

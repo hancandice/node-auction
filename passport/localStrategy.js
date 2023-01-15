@@ -1,7 +1,7 @@
 const { compare } = require("bcrypt");
 const { use } = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
-const User = require("../models/user");
+const { User } = require("../models");
 
 module.exports = () => {
   use(
