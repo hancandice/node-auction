@@ -11,14 +11,18 @@
 
 <body>
 
-    <label for="email">Email</label>
-    <input type="email" id="email" required autofocus>
+    <form action="/auth/login" method="post">
 
-    <label for="password">Password</label>
-    <input type="password" id="password" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autofocus>
 
-    <a href="/join">Sign up</a>
-    <button type="submit">Login</button>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <a href="/join">Sign up</a>
+        <button type="submit">Login</button>
+
+    </form>
 
     <footer>
         Made by <a href="https://hancandice.github.io" target="_blank">Jeeyoung Han</a>
@@ -26,6 +30,14 @@
 
     {% block content %}
     {% endblock %}
+
+    <script>
+        window.onload = () => {
+            if (new URL(location.href).searchParams.get("loginError")) {
+                alert(new URL(location.href).searchParams.get("loginError"))
+            }
+        }
+    </script>
 </body>
 
 </html>
