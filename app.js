@@ -7,13 +7,14 @@ const indexRouter = require("./routes/index");
 const authRouter = require("./routes/auth")
 const passportConfig = require("./passport");
 const cookieParser = require("cookie-parser");
-const { config } = require("dotenv");
+const dotenv = require("dotenv");
 const session = require("express-session");
 
-config()
+dotenv.config()
 
 const app = express();
 passportConfig()
+
 app.set("port", process.env.PORT || 8010);
 app.set("view engine", "html");
 nunjucks.configure("views", {
@@ -29,16 +30,9 @@ sequelize
     console.log({ error });
   });
 
-
-
 app.use(morgan("dev"));
-
-app.use(passport.initialize());
-app.use(passport.session())
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
@@ -51,6 +45,9 @@ app.use(
     },
   }),
 );
+
+app.use(passport.initialize()); // add passport config at req obj
+app.use(passport.session()); // save passport info at req.session obj
 
 app.use("/", indexRouter);
 app.use("/auth", authRouter)

@@ -5,7 +5,8 @@ const { checkSignedUp } = require("./middlewares");
 const router = Router();
 
 router.use((req, res, next) => {
-  // console.log({ req, res });
+  console.log({ req, res })
+  res.locals.user = req.user
   next();
 });
 

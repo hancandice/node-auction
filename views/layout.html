@@ -11,6 +11,16 @@
 
 <body>
 
+    {% if user and user.id %}
+
+    <div>Hello 👋🏼 {{user.nickname}}</div>
+    <div>Your money: {{user.money}}€</div>
+
+    <a href="/auth/logout">Logout</a>
+    <a href="'/good">Register goods</a>
+
+    {% else %}
+
     <form action="/auth/login" method="post">
 
         <label for="email">Email</label>
@@ -23,6 +33,8 @@
         <button type="submit">Login</button>
 
     </form>
+
+    {% endif %}
 
     <footer>
         Made by <a href="https://hancandice.github.io" target="_blank">Jeeyoung Han</a>

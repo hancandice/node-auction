@@ -1,6 +1,6 @@
 const { hash } = require("bcrypt");
 const { Router } = require("express");
-const { authenticate } = require("passport");
+const passport = require("passport");
 const { User } = require("../models")
 
 const router = Router()
@@ -28,13 +28,23 @@ router.post("/join", async (req, res, next) => {
     }
 })
 
-router.post("/login", () => {
-    authenticate("local", (authError, user, info) => {
+router.post("/login", (req, res, next) => {
+    passport.authenticate("local", (authError, user, info) => {
         if (authError) {
             console.error({ authError })
             return next(authError)
         }
-    })
+        if (!user) {
+            return res.redirect(`/?loginError=${info.message}`)
+        }
+        return req.login(user, (loginError) => {
+            if (loginError) {
+                console.error({ loginError })
+                return next(loginError)
+            }
+            return res.redirect("/")
+        })
+    })(req, res, next) // middleware in middleware
 })
 
 module.exports = router
