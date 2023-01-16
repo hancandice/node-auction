@@ -1,10 +1,10 @@
 const { compare } = require("bcrypt");
-const { use } = require("passport");
-const { Strategy: LocalStrategy } = require("passport-local");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 const { User } = require("../models");
 
 module.exports = () => {
-  use(
+  passport.use(
     new LocalStrategy(
       {
         usernameField: "email",
@@ -14,8 +14,8 @@ module.exports = () => {
         try {
           const exUser = await User.findOne({ where: { email } });
           if (exUser) {
-            const isLoggedIn = await compare(password, exUser.password);
-            if (isLoggedIn) {
+            const isCorrectPassword = await compare(password, exUser.password);
+            if (isCorrectPassword) {
               done(null, exUser);
             } else {
               done(null, false, { message: "Password not correct." });

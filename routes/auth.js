@@ -1,5 +1,6 @@
 const { hash } = require("bcrypt");
 const { Router } = require("express");
+const { authenticate } = require("passport");
 const { User } = require("../models")
 
 const router = Router()
@@ -25,6 +26,15 @@ router.post("/join", async (req, res, next) => {
         console.error({ error })
         return next(error)
     }
+})
+
+router.post("/login", () => {
+    authenticate("local", (authError, user, info) => {
+        if (authError) {
+            console.error({ authError })
+            return next(authError)
+        }
+    })
 })
 
 module.exports = router
