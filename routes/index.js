@@ -33,4 +33,18 @@ router.get("/good", checkLoggedIn, (req, res) => {
   res.render("good", { title: 'Register goods 🛍 - Auction' })
 })
 
+
+router.post("/good", checkLoggedIn, (req, res, next) => {
+
+  try {
+
+    const body = req.body
+    console.log({ body })
+
+  } catch (err) {
+
+  }
+
+})
+
 module.exports = router;
