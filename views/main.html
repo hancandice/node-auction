@@ -3,4 +3,24 @@
 {% block content %}
 <h2>Auction Goods List</h2>
 
+<table>
+    <tr>
+        <th>Name of Good</th>
+        <th>Image of Good</th>
+        <th>Starting Price</th>
+        <th>End time</th>
+        <th>Entrance</th>
+    </tr>
+
+    {% for good in goods %}
+    <tr>
+        <td>{{good.name}}</td>
+        <td><img src="/img/{{good.img}}"></td>
+        <td>{{good.price}}</td>
+        <td>00:00:00</td>
+        <td><a href="/good/{{good.id}}">Enter</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
 {% endblock %}

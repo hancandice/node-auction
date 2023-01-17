@@ -9,6 +9,7 @@ const passportConfig = require("./passport");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const session = require("express-session");
+const path = require("path")
 
 dotenv.config()
 
@@ -31,6 +32,8 @@ sequelize
   });
 
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "public")))
+app.use("/img", express.static(path.join(__dirname, "uploads")))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser(process.env.COOKIE_SECRET));

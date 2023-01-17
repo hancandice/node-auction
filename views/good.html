@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<form action="/good" method="post">
+<form action="/good" method="post" enctype="multipart/form-data">
     <label for="good-name">Name of Good</label>
     <input type="text" id="good-name" name="name" required autofocus>
     <label for="good-img">Image of Good</label>
