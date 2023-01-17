@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { Good } = require("../models");
-const { checkNotLoggedIn } = require("./middlewares");
+const { checkNotLoggedIn, checkLoggedIn } = require("./middlewares");
 
 const router = Router();
 
@@ -28,5 +28,9 @@ router.get("/join", checkNotLoggedIn, async (req, res, next) => {
     title: "Sign up for Auction 😉"
   });
 });
+
+router.get("/good", checkLoggedIn, (req, res) => {
+  res.render("good", { title: 'Register goods 🛍 - Auction' })
+})
 
 module.exports = router;
