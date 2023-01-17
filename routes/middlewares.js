@@ -1,3 +1,15 @@
-exports.checkLoggedIn = (req, res, next) => {};
+exports.checkLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        next()
+    } else {
+        res.redirect("/?loginError=You need to login first.")
+    }
+};
 
-exports.checkSignedUp = (req, res, next) => {};
+exports.checkNotLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        next()
+    } else {
+        res.redirect("/")
+    }
+};

@@ -1,11 +1,10 @@
 const { Router } = require("express");
 const { Good } = require("../models");
-const { checkSignedUp } = require("./middlewares");
+const { checkNotLoggedIn } = require("./middlewares");
 
 const router = Router();
 
 router.use((req, res, next) => {
-  console.log({ req, res })
   res.locals.user = req.user
   next();
 });
@@ -24,7 +23,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/join", async (req, res, next) => {
+router.get("/join", checkNotLoggedIn, async (req, res, next) => {
   res.render("join", {
     title: "Sign up for Auction 😉"
   });
