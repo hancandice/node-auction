@@ -10,6 +10,9 @@ const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const session = require("express-session");
 const path = require("path")
+const sse = require("./sse")
+const webSocket = require("./socket")
+
 
 dotenv.config()
 
@@ -69,6 +72,9 @@ app.use((err, _req, res, _next) => {
   res.render("error");
 });
 
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
   console.log("waiting on port ⛴ ", app.get("port"));
 });
+
+webSocket(server, app)
+sse(server)
