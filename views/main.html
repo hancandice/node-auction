@@ -1,26 +1,29 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 
 {% block content %}
-<h2>Auction Goods List</h2>
-
-<table>
-    <tr>
-        <th>Name of Good</th>
-        <th>Image of Good</th>
-        <th>Starting Price</th>
-        <th>End time</th>
-        <th>Entrance</th>
-    </tr>
-
-    {% for good in goods %}
-    <tr>
-        <td>{{good.name}}</td>
-        <td><img src="/img/{{good.img}}"></td>
-        <td>{{good.price}}</td>
-        <td>00:00:00</td>
-        <td><a href="/good/{{good.id}}">Enter</a></td>
-    </tr>
-    {% endfor %}
-</table>
-
+<div class="timeline">
+    <h2>Auction List</h2>
+    <table id="good-list">
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Starting Price</th>
+            <th>End Time</th>
+            <th>Enterance</th>
+        </tr>
+        {% for good in goods %}
+        <tr>
+            <td>{{good.name}}</td>
+            <td>
+                <img src="/img/{{good.img}}">
+            </td>
+            <td>{{good.price}}</td>
+            <td class="time">00:00:00</td>
+            <td>
+                <a href="/good/{{good.id}}" class="enter btn">Enter</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}

@@ -4,51 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
-    <meta name="viewport" content="width=device-width" , user-scalable="no">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- @TODO: add style sheet css file -->
+    <link rel="stylesheet" href="/main.css">
 </head>
 
 <body>
-
-    {% if user and user.id %}
-
-    <div>Hello 👋🏼 {{user.nickname}}</div>
-    <div>Your money: {{user.money}}€</div>
-
-    <a href="/auth/logout">Logout</a>
-    <a href="/good">Register goods</a>
-
-    {% else %}
-
-    <form action="/auth/login" method="post">
-
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required autofocus>
-
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-
-        <a href="/join">Sign up</a>
-        <button type="submit">Login</button>
-
-    </form>
-
-    {% endif %}
-
-    <footer>
-        Made by <a href="https://hancandice.github.io" target="_blank">Jeeyoung Han</a>
-    </footer>
-
-    {% block content %}
-    {% endblock %}
-
+    <div class="container">
+        <div class="profile-wrap">
+            <div class="profile">
+                {% if user and user.id %}
+                <div class="user-name">Hello 👋🏼 {{user.nickname}} 💕</div>
+                <div class="user-money">Your money: {{user.money}} €</div>
+                <input type="hidden" id="my-id" value={{user.id}}>
+                <a href="/auth/logout" id="logout" class="btn">Logout</a>
+                <a href="/good" id="register" class="btn">Register Goods</a>
+                {% else %}
+                <form action="/auth/login" id="login-form" method="post">
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required autofocus>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <a href="/join" id="join" class="btn">Sign Up</a>
+                    <button id="login" class="btn" type="submit">Login</button>
+                </form>
+                {% endif %}
+            </div>
+            <footer>
+                Made by <a href="https://hancandice.github.io" target="_blank">Jeeyoung HAN</a>
+            </footer>
+            {% block good %}
+            {% endblock %}
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
     <script>
         window.onload = () => {
-            if (new URL(location.href).searchParams.get("loginError")) {
-                alert(new URL(location.href).searchParams.get("loginError"))
+            if (new URL(location.href).searchParams.get('loginError')) {
+                alert(new URL(location.href).searchParams.get('loginError'));
             }
-        }
+        };
     </script>
 </body>
 
