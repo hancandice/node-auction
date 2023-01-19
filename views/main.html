@@ -18,7 +18,7 @@
                 <img src="/img/{{good.img}}">
             </td>
             <td>{{good.price}}</td>
-            <td class="time">00:00:00</td>
+            <td class="time" data-start="{{good.createdAt}}">00:00:00</td>
             <td>
                 <a href="/good/{{good.id}}" class="enter btn">Enter</a>
             </td>
@@ -26,8 +26,25 @@
         {% endfor %}
     </table>
 </div>
-
+<script src="https://unpkg.com/event-source-polyfill/src/eventsource.min.js">
+</script>
 <script>
-
+    const es = new EventSource("/sse")
+    es.onmessage = function (e) {
+        document.querySelectorAll(".time").forEach((td) => {
+            const end = new Date(td.dataset.start)
+            const server = new Date(parseInt(e.data, 10))
+            end.setDate(end.getDate() + 1)
+            if (server >= end) {
+                return td.textContent = "00:00:00"
+            } else {
+                const t = end - server
+                const seconds = ("0" + Math.floor((t / 1000) % 60)).slice(-2)
+                const minutes = ("0" + Math.floor((t / 1000 / 60) % 60)).slice(-2)
+                const hours = ("0" + Math.floor((t / (60 * 60 * 1000)) % 24)).slice(-2)
+                return td.textContent = `${hours}:${minutes}:${seconds}`
+            }
+        })
+    }
 </script>
 {% endblock %}
