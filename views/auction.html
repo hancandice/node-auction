@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block good %}
+<h2>♥️ {{good.name}} ♥️</h2>
+<div>Registered by <b>{{good.Owner.nickname}}</b></div>
+<div>Starting Price: <b>{{good.price}} €</b></div>
+<strong id="time" data-start="{{good.createdAt}}"></strong>
+<img id="good-img" src="/img/{{good.img}}">
+{% endblock %}
+{% block content %}
+<div class="timeline">
+    <form id="bid-form">
+        <input type="number" name="bid" placeholder="bid" min="{{good.price}}" required>
+        <input type="text" name="msg" placeholder="message (optional)" maxlength="100">
+        <button class="btn" type="submit">Place a bid</button>
+    </form>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/event-source-polyfill/src/eventsource.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    document.querySelector("#bid-form").addEventListener("submit", (e) => {
+        e.preventDefault()
+        axios.post("/good/{{good.id}}/bid", {
+            bid: e.target.bid.value,
+            msg: e.target.msg.value
+        }).catch((error) => {
+            console.log({ error })
+            alert(error.response.data)
+        }).finally(() => {
+            e.target.bid.value = ""
+            e.target.msg.value = ""
+        })
+        const es = new EventSource("/sse")
+        const time = document.querySelector("#time")
+        es.onmessage = (e) => {
+            const end = new Date(time.dataset.start)
+            const server = new Date(parseInt(e.data, 10))
+            end.setDate(end.getDate() + 1)
+            if (server >= end) {
+                return time.textContent = "00:00:00"
+            } else {
+                const t = end - server
+                const seconds = ("0" + Math.floor((t / 1000) % 60)).slice(-2)
+                const minutes = ("0" + Math.floor((t / 1000 / 60) % 60)).slice(-2)
+                const hours = ("0" + Math.floor((t / (60 * 60 * 1000)) % 24)).slice(-2)
+                return time.textContent = `${hours}:${minutes}:${seconds}`
+            }
+        }
+    })
+</script>
+
+{% endblock %}
