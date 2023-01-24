@@ -74,16 +74,24 @@ router.post("/good", checkLoggedIn, upload.single("img"), async (req, res, next)
 
 router.get("/good/:id", checkLoggedIn, async (req, res, next) => {
   try {
-    const good = await Good.findOne({
-      where: { id: req.params.id },
-      include: {
-        model: User,
-        as: "Owner"
-      }
-    })
+    const [good, auction] = await Promise.all([
+      Good.findOne({
+        where: { id: req.params.id },
+        include: {
+          model: User,
+          as: "Owner"
+        }
+      }),
+      Auction.findAll({
+        where: { GoodId: req.params.id },
+        include: { model: User },
+        order: [["bid", "ASC"]]
+      })
+    ])
     res.render("auction", {
       title: `${good.name} - Auction`,
-      good
+      good,
+      auction
     })
   } catch (error) {
     console.log({ error })
@@ -96,6 +104,8 @@ router.post("/good/:id/bid", checkLoggedIn, async (req, res, next) => {
     const { bid, msg } = req.body
     const good = await Good.findOne({
       where: { id: req.params.id },
+      include: { model: Auction },
+      order: [[{ model: Auction }, "bid", "DESC"]]
     })
     if (good.price >= bid) {
       return res.status(403).send("You must bid above the starting price.")
@@ -103,11 +113,19 @@ router.post("/good/:id/bid", checkLoggedIn, async (req, res, next) => {
     if (new Date(good.createdAt).valueOf() + (24 * 60 * 60 * 1000) < new Date()) {
       return res.status(403).send("Auction has already ended.")
     }
+    if (good.Auctions[0] && good.Auctions[0].bid >= bid) {
+      return res.status(403).send("Your bid must be higher than the current bid.")
+    }
     const result = await Auction.create({
       bid,
       msg,
       UserId: req.user.id,
       GoodId: req.params.id
+    })
+    req.app.get("io").to(req.params.id).emit("bid", {
+      bid: result.bid,
+      msg: result.msg,
+      nickname: req.user.nickname
     })
     return res.send("ok")
   } catch (error) {

@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+
 {% block good %}
 <h2>♥️ {{good.name}} ♥️</h2>
 <div>Registered by <b>{{good.Owner.nickname}}</b></div>
@@ -6,8 +7,20 @@
 <strong id="time" data-start="{{good.createdAt}}"></strong>
 <img id="good-img" src="/img/{{good.img}}">
 {% endblock %}
+
 {% block content %}
 <div class="timeline">
+    <div id="bid">
+        {% for bid in auction %}
+        <div>
+            <span>{{bid.User.nickname}} </span>
+            <strong>bid it for {{bid.bid}} €.</strong>
+            {% if bid.msg %}
+            <span>{{bid.msg}}</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
     <form id="bid-form">
         <input type="number" name="bid" placeholder="bid" min="{{good.price}}" required>
         <input type="text" name="msg" placeholder="message (optional)" maxlength="100">
@@ -47,6 +60,30 @@
             }
         }
     })
+    const socket = io.connect("http://localhost:8010", {
+        path: "/socket.io"
+    })
+    socket.on("bid", (data) => {
+        const div = document.createElement("div")
+        let span = document.createElement("span")
+        span.textContent = data.nickname
+        const strong = document.createElement("strong")
+        strong.textContent = ` bid it for ${data.bid} €.`
+        div.appendChild(span)
+        div.appendChild(strong)
+        if (data.msg) {
+            span = document.createElement("span")
+            span.textContent = data.msg
+            div.appendChild(span)
+        }
+        document.querySelector("#bid").appendChild(div)
+    })
 </script>
-
+<script>
+    window.onload = () => {
+        if (new URL(location.href).searchParams.get("auctionError")) {
+            alert(new URL(location.href).searchParams.get("auctionError"))
+        }
+    }
+</script>
 {% endblock %}
