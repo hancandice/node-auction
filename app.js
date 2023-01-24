@@ -12,12 +12,14 @@ const session = require("express-session");
 const path = require("path")
 const sse = require("./sse")
 const webSocket = require("./socket")
+const checkAuction = require("./checkAuction")
 
 
 dotenv.config()
 
 const app = express();
 passportConfig()
+checkAuction()
 
 app.set("port", process.env.PORT || 8010);
 app.set("view engine", "html");

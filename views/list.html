@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="timeline">
+    <h2>Winning Bid List 🏆</h2>
+    <table id="good-list">
+        <tr>
+            <th>Product Name</th>
+            <th>Photo</th>
+            <th>Bid</th>
+        </tr>
+        {% for good in goods %}
+        <tr>
+            <td>{{good.name}}</td>
+            <td>
+                <img src="/img/{{good.img}}">
+            </td>
+            <td>
+                {{good.Auctions[0].bid}}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
