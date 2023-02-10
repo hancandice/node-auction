@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "Password_root@2023",
+    "password": "Password_root@1127",
     "database": "nodeauction_db_dev",
     "host": "127.0.0.1",
     "dialect": "mysql"
