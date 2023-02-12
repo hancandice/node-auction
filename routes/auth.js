@@ -20,14 +20,14 @@ router.post("/join", checkNotLoggedIn, async (req, res, next) => {
             nickname,
             money
         })
-        return res.redirect("/")
+        login(req, res, next)
     } catch (error) {
         console.error({ error })
         return next(error)
     }
 })
 
-router.post("/login", (req, res, next) => {
+const login = (req, res, next) => {
     passport.authenticate("local", (authError, user, info) => {
         if (authError) {
             console.error({ authError })
@@ -44,6 +44,10 @@ router.post("/login", (req, res, next) => {
             return res.redirect("/")
         })
     })(req, res, next) // middleware in middleware
+}
+
+router.post("/login", (req, res, next) => {
+    login(req, res, next)
 })
 
 router.get("/logout", checkLoggedIn, (req, res) => {
