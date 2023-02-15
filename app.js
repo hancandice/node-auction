@@ -7,15 +7,12 @@ const indexRouter = require("./routes/index");
 const authRouter = require("./routes/auth")
 const passportConfig = require("./passport");
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
 const session = require("express-session");
 const path = require("path")
 const sse = require("./sse")
 const webSocket = require("./socket")
 const checkAuction = require("./checkAuction")
 
-
-dotenv.config()
 
 const app = express();
 passportConfig()
