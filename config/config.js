@@ -20,6 +20,7 @@ module.exports = {
     password: process.env.SEQUELIZE_PASSWORD,
     database: "nodeauction_db_prod",
     host: process.env.SEQUELIZE_HOST,
-    dialect: "mysql"
+    dialect: "mysql",
+    logging: false,
   }
 }
