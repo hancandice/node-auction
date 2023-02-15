@@ -36,7 +36,11 @@ sequelize
     console.log({ error });
   });
 
-app.use(morgan("dev"));
+if (process.env.NODE_ENV === "production") {
+  app.use(morgan("combined")) // combined 모드는 dev 모드에 비해 사용자 로그를 더 남김
+} else {
+  app.use(morgan("dev"))
+}
 app.use(express.static(path.join(__dirname, "public")))
 app.use("/img", express.static(path.join(__dirname, "uploads")))
 app.use(express.json())
@@ -69,7 +73,7 @@ app.use((req, _res, next) => {
 
 app.use((err, _req, res, _next) => {
   res.locals.message = err.message;
-  res.locals.error = process.env.NODE_ENV != "production" ? err : {};
+  res.locals.error = process.env.NODE_ENV === "production" ? {} : err;
   res.status(err.status || 500);
   res.render("error");
 });
