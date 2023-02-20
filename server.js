@@ -13,6 +13,11 @@ const sse = require("./sse")
 const webSocket = require("./socket")
 const checkAuction = require("./checkAuction")
 
+const sanitizeHtml = require("sanitize-html")
+
+const html = "<script>location.href = 'http://localhost:8010'</script>"
+console.log(sanitizeHtml(html)) // 사용자가 업로드한 html을 sanitize-html 함수로 감싸면 허용하지 않는 태그나 스크립트는 제거됨
+
 
 const app = express();
 passportConfig()
